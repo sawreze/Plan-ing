@@ -1,0 +1,15 @@
+Tool: built-in image_gen. Three separate edits of pling-mascot.png; transparent_background=true.
+[
+  {
+    "key": "crying",
+    "prompt": "Use case: precise-object-edit. Edit target: the provided original Pling orange furry mascot. Create a single full-body transparent PNG of EXACTLY this same character. Keep vivid orange fur hue, fluffy tactile texture, pear-shaped proportions, one broad rounded front tooth, large cream eye surrounds, asymmetric floppy ears, tiny arms and legs, original camera and soft studio lighting. Change ONLY facial expression as described below. Keep full body with consistent padding and no cropping. No text, props, clothing, other characters, border, or background. True alpha transparency. Expression: sad and softly crying, expressive worried eyebrows, shiny tear-filled eyes and two small visible blue tears rolling down cheeks, a small downturned mouth. Gentle cute sadness, not extreme distress."
+  },
+  {
+    "key": "angry",
+    "prompt": "Use case: precise-object-edit. Edit target: the provided original Pling orange furry mascot. Create a single full-body transparent PNG of EXACTLY this same character. Keep vivid orange fur hue, fluffy tactile texture, pear-shaped proportions, one broad rounded front tooth, large cream eye surrounds, asymmetric floppy ears, tiny arms and legs, original camera and soft studio lighting. Change ONLY facial expression as described below. Keep full body with consistent padding and no cropping. No text, props, clothing, other characters, border, or background. True alpha transparency. Expression: a cute mildly angry pout, two fur eyebrows tilted inward, eyes looking determined, mouth small and pouting. Clearly grumpy but still friendly and lovable, no violence, no menacing teeth."
+  },
+  {
+    "key": "happy",
+    "prompt": "Use case: precise-object-edit. Edit target: the provided original Pling orange furry mascot. Create a single full-body transparent PNG of EXACTLY this same character. Keep vivid orange fur hue, fluffy tactile texture, pear-shaped proportions, one broad rounded front tooth, large cream eye surrounds, asymmetric floppy ears, tiny arms and legs, original camera and soft studio lighting. Change ONLY facial expression as described below. Keep full body with consistent padding and no cropping. No text, props, clothing, other characters, border, or background. True alpha transparency. Expression: extra joyful and proud, smiling widely with the original single front tooth visible, bright sparkling joyful eyes and lifted eyebrows. A distinct celebratory delighted expression more excited than the original gentle smile."
+  }
+]

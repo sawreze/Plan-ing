@@ -1,0 +1,19 @@
+# 플잉 앱 아이콘 시안
+
+제작: 내장 image_gen 도구. 기존 pling-mascot.png를 외형 참고로 사용.
+
+## 01-mascot
+
+Use case: logo-brand. Asset type: one standalone square mobile app launcher icon for Pling, a warm Korean study and planning app. Input image: character identity reference only, not edit target. Preserve recognizable orange fuzzy pear-shaped friendly mascot, one upright ear and one folded ear, large brown eyes and single rounded front tooth. Premium polished 3D tactile illustration, extremely clear silhouette at tiny icon size. One square icon only, artwork fills square canvas with opaque background to all edges, no outside margin, no device mockup, no text, no lettering, no watermark. Keep important content within central 80 percent, icon ready for OS masking. A tightly composed friendly close-up of the mascot face and ears on warm ivory #fff0d9. Face fills most of the frame, tiny soft contact shadows, inviting happy smile. Simplicity and character recognition.
+
+## 02-planner
+
+Use case: logo-brand. Asset type: one standalone square mobile app launcher icon for Pling, a warm Korean study and planning app. Input image: character identity reference only, not edit target. Preserve recognizable orange fuzzy pear-shaped friendly mascot, one upright ear and one folded ear, large brown eyes and single rounded front tooth. Premium polished 3D tactile illustration, extremely clear silhouette at tiny icon size. One square icon only, artwork fills square canvas with opaque background to all edges, no outside margin, no device mockup, no text, no lettering, no watermark. Keep important content within central 80 percent, icon ready for OS masking. Mascot peeking from behind one chunky cream calendar page with three thick pastel colored schedule strips and one small orange checkmark, no numbers, no letters, no calendar grid. Soft muted sage-green background. Main face and calendar unified into one compact silhouette. Rounded clay paper and plush texture.
+
+## 03-symbol
+
+Use case: logo-brand. Asset type: one standalone square mobile app launcher icon for Pling, a warm Korean study and planning app. Input image: character identity reference only, not edit target. Preserve recognizable orange fuzzy pear-shaped friendly mascot, one upright ear and one folded ear, large brown eyes and single rounded front tooth. Premium polished 3D tactile illustration, extremely clear silhouette at tiny icon size. One square icon only, artwork fills square canvas with opaque background to all edges, no outside margin, no device mockup, no text, no lettering, no watermark. Keep important content within central 80 percent, icon ready for OS masking. A distinctive simple orange soft sculpted lowercase-p-inspired loop symbol incorporating a checkmark in its negative space, with two tiny ear-like protrusions echoing the reference mascot, but no eyes or face. Flat warm ivory background. Minimal dimensional clay logo, one unified shape, bold clear graphic silhouette, no actual typography.
+
+## 04-dark
+
+Use case: logo-brand. Asset type: one standalone square mobile app launcher icon for Pling, a warm Korean study and planning app. Input image: character identity reference only, not edit target. Preserve recognizable orange fuzzy pear-shaped friendly mascot, one upright ear and one folded ear, large brown eyes and single rounded front tooth. Premium polished 3D tactile illustration, extremely clear silhouette at tiny icon size. One square icon only, artwork fills square canvas with opaque background to all edges, no outside margin, no device mockup, no text, no lettering, no watermark. Keep important content within central 80 percent, icon ready for OS masking. A cozy icon of reference mascot's large smiling face with one small butter-yellow four-point sparkle beside its head. Deep cocoa brown #35281f background, orange and warm cream accents. Close-up fills frame. Soft warm rim light, plush fur, striking readable contrast and joyful gentle expression.
