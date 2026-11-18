@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>플잉 API 테스트</title>
+<style>
+:root{--key:#ff9000;--ink:#a65200;--tint:#fff0d9;--bg:#fbf7f2;--card:#fff;--line:#eadfd2;--text:#2b2118;--muted:#7a6a5a;--ok:#2f8a57;--bad:#c2410c}
+@media (prefers-color-scheme:dark){:root{--key:#ff9a1f;--ink:#ffc077;--tint:#3a2611;--bg:#17120e;--card:#221a14;--line:#3a2e24;--text:#f5ebe0;--muted:#b8a593}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+header{position:sticky;top:0;z-index:2;background:var(--card);border-bottom:1px solid var(--line);padding:12px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+header h1{font-size:18px;margin:0;color:var(--ink)}
+header .who{margin-left:auto;color:var(--muted)}
+main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:820px){main{grid-template-columns:1fr}}
+section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}
+section h2{font-size:15px;margin:0 0 10px}
+.full{grid-column:1/-1}
+label{display:block;font-size:12px;color:var(--muted);margin:8px 0 3px}
+input,select{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);font:inherit}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:end}.row>*{flex:1;min-width:90px}
+button{border:0;border-radius:12px;padding:9px 14px;font:600 14px inherit;background:var(--tint);color:var(--ink);cursor:pointer}
+button.key{background:var(--key);color:#fff}
+button:disabled{opacity:.45;cursor:not-allowed}
+button:focus-visible,input:focus-visible{outline:3px solid var(--key);outline-offset:2px}
+.swatches{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.sw{width:30px;height:30px;border-radius:50%;padding:0;border:2px solid transparent}
+.sw[aria-pressed=true]{border-color:var(--text)}
+ul{list-style:none;margin:0;padding:0}
+li{display:flex;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+li:last-child{border:0}
+.bar{width:6px;align-self:stretch;border-radius:3px}
+.grow{flex:1;min-width:0}
+.done .t{text-decoration:line-through;color:var(--muted)}
+.small{font-size:12px;color:var(--muted)}
+.clock{font:700 44px/1 ui-monospace,Menlo,monospace;text-align:center;margin:14px 0 6px}
+.state{text-align:center;color:var(--muted)}
+.controls{display:flex;gap:10px;justify-content:center;margin-top:12px}
+.controls button{min-width:72px}
+.play{width:64px;height:64px;border-radius:50%;font-size:24px}
+.msg{min-height:20px;margin-top:8px;font-size:13px}
+.msg.ok{color:var(--ok)}.msg.bad{color:var(--bad)}
+.coins{display:inline-block;background:var(--tint);color:var(--ink);border-radius:20px;padding:4px 10px;font-weight:700}
+section{min-width:0}
+#log{overflow-wrap:anywhere;font:12px/1.45 ui-monospace,Menlo,monospace;max-height:320px;overflow:auto;white-space:pre-wrap;background:var(--bg);border-radius:10px;padding:10px;margin:0}
+#log .e{color:var(--bad)}
+.celebrate{text-align:center;padding:12px;border-radius:12px;background:var(--tint);margin-top:12px}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header>
+  <h1>플잉 API 테스트</h1>
+  <span class="small">ADHD를 위한 다정한 일정·공부 메이트 · 서버 확인용 화면(앱 디자인 아님)</span>
+  <span class="who" id="who">로그인 전</span>
+</header>
+<main>
+  <section id="loginBox" class="full">
+    <h2>1. 로그인 (로컬 테스트용)</h2>
+    <p class="small">실제 Google/Apple 로그인이 아니라, 서버의 AUTH_DEV_SECRET으로 만든 테스트 토큰이에요. 닉네임이 다르면 다른 사용자예요.</p>
+    <form id="loginForm" class="row">
+      <div><label for="nick">닉네임</label><input id="nick" maxlength="30" value="테스터" required></div>
+      <button class="key" type="submit">로그인</button>
+      <button type="button" id="logout">로그아웃</button>
+    </form>
+    <div class="msg" id="loginMsg" role="status"></div>
+  </section>
+
+  <section>
+    <h2>2. 계획 만들기</h2>
+    <form id="planForm">
+      <label for="title">이름 (최대 60자)</label><input id="title" maxlength="60" value="영어 단어 외우기" required>
+      <div class="row">
+        <div><label for="date">날짜</label><input id="date" type="date" required></div>
+        <div><label for="start">시작</label><input id="start" type="time" value="09:00" required></div>
+        <div><label for="end">끝</label><input id="end" type="time" value="09:25" required></div>
+      </div>
+      <label>색 (같은 색 여러 번 써도 돼요)</label>
+      <div class="swatches" id="swatches"></div>
+      <div class="row" style="margin-top:12px"><button class="key" type="submit">추가</button></div>
+    </form>
+    <div class="msg" id="planMsg" role="status"></div>
+  </section>
+
+  <section>
+    <h2>3. 계획 목록</h2>
+    <div class="row"><div><label for="viewDate">날짜</label><input id="viewDate" type="date"></div><button type="button" id="reload">새로고침</button></div>
+    <ul id="plans" aria-live="polite"></ul>
+  </section>
+
+  <section>
+    <h2>4. 집중 타이머</h2>
+    <p class="small" id="focusPlan">목록에서 계획의 「집중」을 눌러주세요.</p>
+    <div class="clock" id="clock">--:--</div>
+    <div class="state" id="focusState">-</div>
+    <div class="controls">
+      <button type="button" id="skipBtn" disabled>넘기기</button>
+      <button type="button" class="key play" id="mainBtn" aria-label="집중 시작" disabled>▶</button>
+      <button type="button" id="pauseBtn" disabled>멈춤</button>
+    </div>
+    <div class="celebrate" id="celebrate" hidden>
+      <strong>끝까지 해냈구나!</strong>
+      <p class="small">조금씩 쌓인 노력이 반짝이고 있어.</p>
+      <button type="button" class="key" id="claimBtn">🪙 코인 5개 받기</button>
+    </div>
+    <div class="msg" id="focusMsg" role="status"></div>
+    <p class="small">▶를 누르기 전에는 시간이 흐르지 않아요. 새로고침해도 서버 시간으로 이어져요.</p>
+  </section>
+
+  <section>
+    <h2>5. 코인 · 설정</h2>
+    <p>잔액 <span class="coins" id="coins">0 코인</span></p>
+    <div class="row">
+      <div><label for="theme">테마</label><select id="theme"><option value="system">시스템</option><option value="light">라이트</option><option value="dark">다크</option></select></div>
+      <div><label for="before">미리 알림</label><select id="before"><option>0</option><option>5</option><option>10</option><option>15</option></select></div>
+      <div><label><input type="checkbox" id="notify" style="width:auto"> 알림 켜기</label></div>
+      <button type="button" id="savePrefs">저장</button>
+    </div>
+    <div class="msg" id="prefsMsg" role="status"></div>
+    <h2 style="margin-top:16px">목표</h2>
+    <form id="goalForm" class="row"><div><label for="goalTitle">새 목표</label><input id="goalTitle" maxlength="60" required></div><button type="submit">추가</button></form>
+    <ul id="goals"></ul>
+  </section>
+
+  <section>
+    <h2>6. 공부 방식 설문</h2>
+    <label>시작할 때 어려운 점 (여러 개)</label>
+    <div id="q2">
+      <label><input type="checkbox" value="0" style="width:auto"> 뭐부터 할지 모르겠어요</label>
+      <label><input type="checkbox" value="1" style="width:auto"> 세운 계획을 못 지켜요</label>
+      <label><input type="checkbox" value="2" style="width:auto"> 시간이 늘 모자라요</label>
+      <label><input type="checkbox" value="3" style="width:auto"> 쉴 틈을 못 만들어요</label>
+    </div>
+    <label for="q3">계획이 바뀌면 잠깐 정리할 시간이 필요해요?</label>
+    <select id="q3"><option value="">응답 안 함</option><option value="0">그런 편이에요</option><option value="1">아니에요</option></select>
+    <div class="row" style="margin-top:10px"><button type="button" id="sendSurvey">결과 보기</button></div>
+    <div class="msg" id="surveyMsg" role="status"></div>
+    <p class="small">규칙 분류이며 진단·검사 점수가 아니에요.</p>
+  </section>
+
+  <section class="full">
+    <h2>요청 기록</h2>
+    <pre id="log" aria-live="polite"></pre>
+  </section>
+</main>
+<script>
+(function () {
+  var $ = function (s) { return document.querySelector(s); };
+  var COLORS = ['#f5d77b', '#f2b6a0', '#b5dac7', '#b8c9ee', '#d6c0e5'];
+  var color = COLORS[0], token = null, session = null, sessionPlan = null, tick = null, syncedAt = 0, syncedLeft = 0;
+  try { token = localStorage.getItem('pling.test.token'); } catch (e) {}
+
+  function seoulToday() { return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul' }).format(new Date()); }
+  function say(id, text, ok) { var el = $(id); el.textContent = text; el.className = 'msg ' + (ok ? 'ok' : 'bad'); }
+  function log(line, bad) {
+    var div = document.createElement('div'); if (bad) div.className = 'e';
+    div.textContent = new Date().toLocaleTimeString('ko-KR') + '  ' + line;
+    $('#log').prepend(div);
+  }
+
+  async function api(method, path, body) {
+    var res = await fetch(path, {
+      method: method,
+      headers: Object.assign({ 'content-type': 'application/json' }, token ? { authorization: 'Bearer ' + token } : {}),
+      body: body === undefined ? undefined : JSON.stringify(body)
+    });
+    var data = res.status === 204 ? null : await res.json().catch(function () { return null; });
+    log(method + ' ' + path + (body ? ' ' + JSON.stringify(body) : '') + '\n  → ' + res.status + ' ' + (data ? JSON.stringify(data) : ''), !res.ok);
+    if (res.status === 401 && path !== '/dev/token') setToken(null);
+    if (!res.ok) throw new Error((data && data.message) || ('오류 ' + res.status));
+    return data;
+  }
+
+  function setToken(t) {
+    token = t;
+    try { t ? localStorage.setItem('pling.test.token', t) : localStorage.removeItem('pling.test.token'); } catch (e) {}
+    if (!t) { $('#who').textContent = '로그인 전'; $('#plans').innerHTML = ''; $('#goals').innerHTML = ''; }
+  }
+
+  // ---- 로그인 ----
+  $('#loginForm').onsubmit = async function (e) {
+    e.preventDefault();
+    try { setToken((await api('POST', '/dev/token', { nickname: $('#nick').value })).token); say('#loginMsg', '로그인했어요', true); await loadAll(); }
+    catch (err) { say('#loginMsg', err.message); }
+  };
+  $('#logout').onclick = function () { setToken(null); say('#loginMsg', '로그아웃했어요', true); };
+
+  async function loadAll() { await Promise.all([loadMe(), loadPlans(), loadGoals()]); }
+
+  async function loadMe() {
+    var me = await api('GET', '/me');
+    $('#who').textContent = (me.displayName || '사용자') + ' · ' + me.timeZone;
+    $('#coins').textContent = me.coins + ' 코인';
+    $('#theme').value = me.preferences.theme;
+    $('#before').value = String(me.preferences.notifications.before);
+    $('#notify').checked = me.preferences.notifications.enabled;
+  }
+
+  // ---- 계획 ----
+  COLORS.forEach(function (c) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'sw'; b.style.background = c;
+    b.setAttribute('aria-label', '색 ' + c); b.setAttribute('aria-pressed', String(c === color));
+    b.onclick = function () { pick(c); };
+    $('#swatches').append(b);
+  });
+  var custom = document.createElement('input'); custom.type = 'color'; custom.value = '#ff9a1f'; custom.style.width = '44px'; custom.setAttribute('aria-label', '직접 조색');
+  custom.oninput = function () { pick(custom.value); };
+  $('#swatches').append(custom);
+  function pick(c) { color = c; document.querySelectorAll('.sw').forEach(function (b) { b.setAttribute('aria-pressed', String(b.style.background && b.getAttribute('aria-label') === '색 ' + c)); }); }
+
+  $('#date').value = $('#viewDate').value = seoulToday();
+  $('#planForm').onsubmit = async function (e) {
+    e.preventDefault();
+    try {
+      await api('POST', '/plans', { title: $('#title').value, date: $('#date').value, start: $('#start').value, end: $('#end').value, color: color });
+      say('#planMsg', '계획이 저장됐어요', true);
+      $('#viewDate').value = $('#date').value; await loadPlans();
+    } catch (err) { say('#planMsg', err.message); }
+  };
+  $('#viewDate').onchange = $('#reload').onclick = function () { loadPlans().catch(function () {}); };
+
+  async function loadPlans() {
+    var d = $('#viewDate').value, list = await api('GET', '/plans?from=' + d + '&to=' + d), ul = $('#plans');
+    ul.innerHTML = '';
+    if (!list.length) { ul.innerHTML = '<li class="small">이 날은 계획이 없어요</li>'; return; }
+    list.forEach(function (p) {
+      var li = document.createElement('li'); if (p.done) li.className = 'done';
+      li.innerHTML = '<span class="bar"></span><div class="grow"><div class="t"></div><div class="small"></div></div>';
+      li.querySelector('.bar').style.background = p.color;
+      li.querySelector('.t').textContent = p.title;
+      li.querySelector('.small').textContent = p.start + ' – ' + p.end + ' · v' + p.version;
+      li.append(btn(p.done ? '완료 취소' : '완료', function () { return api('PATCH', '/plans/' + p.id, { done: !p.done, version: p.version }).then(loadPlans); }));
+      li.append(btn('집중', function () { return openFocus(p); }, p.done));
+      li.append(btn('삭제', function () { return api('DELETE', '/plans/' + p.id).then(loadPlans); }));
+      ul.append(li);
+    });
+  }
+  function btn(text, fn, disabled) {
+    var b = document.createElement('button'); b.type = 'button'; b.textContent = text; b.disabled = !!disabled;
+    b.onclick = function () { fn().catch(function (err) { say('#planMsg', err.message); }); };
+    return b;
+  }
+
+  // ---- 집중 ----
+  async function openFocus(p) {
+    sessionPlan = p; $('#celebrate').hidden = true; say('#focusMsg', '', true);
+    $('#focusPlan').textContent = p.title + ' · ' + p.start + ' – ' + p.end;
+    render(await api('POST', '/plans/' + p.id + '/focus'));
+  }
+  function fmt(s) { return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
+  function render(s) {
+    session = s; syncedAt = Date.now(); syncedLeft = s.remainingSec;
+    clearInterval(tick);
+    var running = s.status === 'RUNNING', live = ['READY', 'RUNNING', 'PAUSED'].indexOf(s.status) !== -1;
+    $('#focusState').textContent = { READY: '준비되면 시작해볼까?', RUNNING: '집중하는 중', PAUSED: '잠깐 쉬는 중', COMPLETED: '집중 완료! 수고했어', SKIPPED: '이번엔 넘겼어요' }[s.status];
+    $('#mainBtn').textContent = s.status === 'READY' ? '▶' : '✓';
+    $('#mainBtn').setAttribute('aria-label', s.status === 'READY' ? '집중 시작' : '계획 완료');
+    $('#mainBtn').disabled = !live;
+    $('#pauseBtn').disabled = !(running || s.status === 'PAUSED');
+    $('#pauseBtn').textContent = s.status === 'PAUSED' ? '재개' : '멈춤';
+    $('#skipBtn').disabled = !live;
+    $('#celebrate').hidden = s.status !== 'COMPLETED';
+    draw();
+    if (running) tick = setInterval(draw, 250);
+  }
+  function draw() {
+    var left = session.status === 'RUNNING' ? Math.max(0, syncedLeft - Math.floor((Date.now() - syncedAt) / 1000)) : session.remainingSec;
+    $('#clock').textContent = fmt(left);
+    if (session.status === 'RUNNING' && left === 0) act('complete'); // 시간 종료
+  }
+  async function act(a) {
+    try { render(await api('POST', '/focus/' + session.id + '/' + a)); if (a === 'complete') { loadPlans(); } }
+    catch (err) { say('#focusMsg', err.message); }
+  }
+  $('#mainBtn').onclick = function () { act(session.status === 'READY' ? 'start' : 'complete'); };
+  $('#pauseBtn').onclick = function () { act(session.status === 'PAUSED' ? 'resume' : 'pause'); };
+  $('#skipBtn').onclick = function () { act('skip'); };
+  $('#claimBtn').onclick = async function () {
+    try {
+      var r = await api('POST', '/plans/' + sessionPlan.id + '/reward');
+      say('#focusMsg', r.granted ? '코인 5개를 받았어요!' : '이미 받은 보상이에요', true);
+      $('#coins').textContent = r.balance + ' 코인';
+    } catch (err) { say('#focusMsg', err.message); }
+  };
+
+  // ---- 설정 · 목표 · 설문 ----
+  $('#savePrefs').onclick = async function () {
+    try {
+      await api('PATCH', '/me', { preferences: { theme: $('#theme').value, notifications: { enabled: $('#notify').checked, atStart: true, before: Number($('#before').value), sound: true } } });
+      say('#prefsMsg', '저장했어요', true);
+    } catch (err) { say('#prefsMsg', err.message); }
+  };
+  async function loadGoals() {
+    var ul = $('#goals'), list = await api('GET', '/goals'); ul.innerHTML = '';
+    list.forEach(function (g) {
+      var li = document.createElement('li'); if (g.done) li.className = 'done';
+      li.innerHTML = '<div class="grow t"></div>'; li.querySelector('.t').textContent = g.title;
+      li.append(btn(g.done ? '취소' : '완료', function () { return api('PATCH', '/goals/' + g.id, { done: !g.done }).then(loadGoals); }));
+      li.append(btn('삭제', function () { return api('DELETE', '/goals/' + g.id).then(loadGoals); }));
+      ul.append(li);
+    });
+  }
+  $('#goalForm').onsubmit = async function (e) {
+    e.preventDefault();
+    try { await api('POST', '/goals', { title: $('#goalTitle').value }); $('#goalTitle').value = ''; await loadGoals(); } catch (err) {}
+  };
+  $('#sendSurvey').onclick = async function () {
+    var q2 = Array.prototype.map.call(document.querySelectorAll('#q2 input:checked'), function (i) { return Number(i.value); });
+    var q3 = $('#q3').value === '' ? null : Number($('#q3').value);
+    try {
+      var r = await api('POST', '/survey', { q1: null, q2: q2, q3: q3 });
+      say('#surveyMsg', r.result ? r.result.name + ' (x ' + r.result.x + '%, y ' + r.result.y + '%)' : '3번에 답하면 위치를 보여줄게요', true);
+    } catch (err) { say('#surveyMsg', err.message); }
+  };
+
+  if (token) loadAll().catch(function () {});
+})();
+</script>
+</body>
+</html>
