@@ -1,0 +1,20 @@
+flowchart TB
+    APP["플잉 앱 · 기존 디자인 유지"]
+    AUTH["관리형 인증 · Google / Apple / 이메일"]
+    API["API 서버 · TypeScript / NestJS
+일정 · 집중 · 목표 · 유형 · 크루 · 코인 · AI"]
+    DB[("PostgreSQL
+사용자 데이터 · 집중 세션 · 보상 원장 · 알림 예약")]
+    AI["Gemini
+위로 대화 · 일정 변경 제안"]
+    WORKER["알림 워커
+예약 조회 · 취소 확인 · 재시도"]
+    PUSH["APNs · iOS 푸시"]
+    APP <-->|로그인| AUTH
+    APP <-->|인증된 API 요청| API
+    AUTH -.->|서명 검증| API
+    API <-->|조회 · 트랜잭션 저장| DB
+    API <-->|오늘 일정 컨텍스트 · 변경 제안| AI
+    DB <-->|지속성 있는 알림 작업| WORKER
+    WORKER -->|발송 요청| PUSH
+    PUSH -->|계획 시작 알림| APP

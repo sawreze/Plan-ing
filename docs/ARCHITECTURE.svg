@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1190" viewBox="0 0 1440 1190" role="img" aria-labelledby="title desc"><title id="title">플잉 백엔드 아키텍처 제안</title><desc id="desc">앱, 관리형 인증, API 서버, PostgreSQL, 알림 워커, Gemini와 APNs의 연결</desc><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#807465"/></marker></defs><rect width="1440" height="1190" fill="#faf7f1"/><g font-family="Apple SD Gothic Neo,Noto Sans KR,Arial,sans-serif">
+<text x="60" y="66" font-size="34" fill="#3a3028" font-weight="800" text-anchor="start">플잉 · 백엔드 아키텍처</text>
+<text x="60" y="102" font-size="18" fill="#8b7560" font-weight="500" text-anchor="start">추천안  |  API 1개 + 알림 워커 1개 + PostgreSQL  |  2026.11.17</text>
+<rect x="60" y="150" width="610" height="128" rx="22" fill="#fff0d9" stroke="#e0d5c7" stroke-width="2"/>
+<text x="84" y="187" font-size="23" fill="#3a3028" font-weight="750" text-anchor="start">플잉 앱 · 기존 디자인 유지</text>
+<text x="84" y="219" font-size="17" fill="#756858" font-weight="500" text-anchor="start">화면 · 타이머 표시 · 마스코트 애니메이션</text>
+<text x="84" y="245" font-size="17" fill="#756858" font-weight="500" text-anchor="start">시작은 ▶ 클릭 후 · 저장은 인증된 API로</text>
+<rect x="955" y="150" width="420" height="128" rx="22" fill="#ffffff" stroke="#e0d5c7" stroke-width="2"/>
+<text x="979" y="187" font-size="23" fill="#3a3028" font-weight="750" text-anchor="start">관리형 인증</text>
+<text x="979" y="219" font-size="17" fill="#756858" font-weight="500" text-anchor="start">Google · Apple · 이메일</text>
+<text x="979" y="245" font-size="17" fill="#756858" font-weight="500" text-anchor="start">예: Supabase Auth</text>
+<path d="M 670 199 L 955 199" fill="none" stroke="#807465" stroke-width="2.3" marker-end="url(#arrow)"/>
+<text x="725" y="187" font-size="15" fill="#766650" font-weight="500" text-anchor="start">로그인 / 인증 토큰</text>
+<path d="M 340 278 L 340 350" fill="none" stroke="#807465" stroke-width="2.3" marker-end="url(#arrow)"/>
+<text x="355" y="322" font-size="15" fill="#766650" font-weight="500" text-anchor="start">HTTPS · 토큰</text>
+<path d="M 1165 278 L 1165 319 L 855 319 L 855 350" fill="none" stroke="#807465" stroke-width="2.3" marker-end="url(#arrow)"/>
+<text x="1020" y="310" font-size="15" fill="#766650" font-weight="500" text-anchor="start">토큰 서명 검증</text>
+<rect x="60" y="350" width="900" height="307" rx="24" fill="#fff" stroke="#eaa964" stroke-width="2.5"/>
+<text x="85" y="388" font-size="25" fill="#3a3028" font-weight="750" text-anchor="start">API 서버 · TypeScript / NestJS</text>
+<text x="85" y="418" font-size="17" fill="#8b7560" font-weight="500" text-anchor="start">권한 검증 → 기능 모듈 → 트랜잭션 · 버전 검사</text>
+<rect x="85" y="442" width="267" height="80" rx="12" fill="#f6f1e9"/>
+<text x="99" y="472" font-size="19" fill="#3a3028" font-weight="700" text-anchor="start">일정 / 목표</text>
+<text x="99" y="499" font-size="15" fill="#7d6b57" font-weight="500" text-anchor="start">생성 · 수정 · 완료</text>
+<rect x="370" y="442" width="267" height="80" rx="12" fill="#f6f1e9"/>
+<text x="384" y="472" font-size="19" fill="#3a3028" font-weight="700" text-anchor="start">집중 / 코인</text>
+<text x="384" y="499" font-size="15" fill="#7d6b57" font-weight="500" text-anchor="start">세션 상태 · 5코인 원장</text>
+<rect x="655" y="442" width="267" height="80" rx="12" fill="#f6f1e9"/>
+<text x="669" y="472" font-size="19" fill="#3a3028" font-weight="700" text-anchor="start">설문 / 크루</text>
+<text x="669" y="499" font-size="15" fill="#7d6b57" font-weight="500" text-anchor="start">유형 분류 · 가입 권한</text>
+<rect x="85" y="538" width="267" height="80" rx="12" fill="#f6f1e9"/>
+<text x="99" y="568" font-size="19" fill="#3a3028" font-weight="700" text-anchor="start">AI 대화</text>
+<text x="99" y="595" font-size="15" fill="#7d6b57" font-weight="500" text-anchor="start">오늘 일정 · 변경 제안</text>
+<rect x="370" y="538" width="267" height="80" rx="12" fill="#f6f1e9"/>
+<text x="384" y="568" font-size="19" fill="#3a3028" font-weight="700" text-anchor="start">사용자 / 설정</text>
+<text x="384" y="595" font-size="15" fill="#7d6b57" font-weight="500" text-anchor="start">프로필 · 테마 · 알림</text>
+<rect x="655" y="538" width="267" height="80" rx="12" fill="#f6f1e9"/>
+<text x="669" y="568" font-size="19" fill="#3a3028" font-weight="700" text-anchor="start">알림 예약</text>
+<text x="669" y="595" font-size="15" fill="#7d6b57" font-weight="500" text-anchor="start">계획과 함께 예약 저장</text>
+<rect x="1020" y="386" width="355" height="172" rx="22" fill="#f0eafa" stroke="#e0d5c7" stroke-width="2"/>
+<text x="1044" y="423" font-size="23" fill="#3a3028" font-weight="750" text-anchor="start">Gemini</text>
+<text x="1044" y="455" font-size="17" fill="#756858" font-weight="500" text-anchor="start">따뜻한 공부 고민 대화</text>
+<text x="1044" y="481" font-size="17" fill="#756858" font-weight="500" text-anchor="start">구조화된 일정 변경 제안</text>
+<text x="1044" y="507" font-size="17" fill="#756858" font-weight="500" text-anchor="start">확정 저장은 서버가 담당</text>
+<path d="M 960 473 L 1020 473" fill="none" stroke="#807465" stroke-width="2.3" marker-end="url(#arrow)"/>
+<text x="976" y="458" font-size="15" fill="#766650" font-weight="500" text-anchor="start">호출</text>
+<rect x="60" y="778" width="900" height="170" rx="22" fill="#eaf3ed" stroke="#b5cdbf" stroke-width="2"/>
+<text x="84" y="815" font-size="23" fill="#3a3028" font-weight="750" text-anchor="start">PostgreSQL · 데이터의 기준</text>
+<text x="84" y="847" font-size="17" fill="#756858" font-weight="500" text-anchor="start">사용자 · 일정 · 목표 · 설문 · 크루 · 집중 세션</text>
+<text x="84" y="873" font-size="17" fill="#756858" font-weight="500" text-anchor="start">보상 원장: 같은 계획 +5코인 1회 · 중복 키로 보장</text>
+<text x="84" y="899" font-size="17" fill="#756858" font-weight="500" text-anchor="start">알림 예약: 기한 · 계획 버전 · 상태 · 발송 시도</text>
+<path d="M 510 657 L 510 778" fill="none" stroke="#807465" stroke-width="2.3" marker-end="url(#arrow)"/>
+<text x="535" y="719" font-size="15" fill="#766650" font-weight="500" text-anchor="start">조회 / 트랜잭션 저장</text>
+<rect x="1020" y="690" width="355" height="144" rx="22" fill="#ffffff" stroke="#e0d5c7" stroke-width="2"/>
+<text x="1044" y="727" font-size="23" fill="#3a3028" font-weight="750" text-anchor="start">알림 워커</text>
+<text x="1044" y="759" font-size="17" fill="#756858" font-weight="500" text-anchor="start">DB에서 기한 도래 작업 선점</text>
+<text x="1044" y="785" font-size="17" fill="#756858" font-weight="500" text-anchor="start">최신 계획·알림 설정 재확인</text>
+<text x="1044" y="811" font-size="17" fill="#756858" font-weight="500" text-anchor="start">실패 시 기록 · 재시도</text>
+<path d="M 960 856 L 990 856 L 990 765 L 1020 765" fill="none" stroke="#807465" stroke-width="2.3" marker-end="url(#arrow)"/>
+<text x="968" y="746" font-size="15" fill="#766650" font-weight="500" text-anchor="start">작업</text>
+<rect x="1020" y="938" width="355" height="110" rx="22" fill="#eaf1fc" stroke="#e0d5c7" stroke-width="2"/>
+<text x="1044" y="975" font-size="23" fill="#3a3028" font-weight="750" text-anchor="start">APNs · iOS 푸시</text>
+<text x="1044" y="1007" font-size="17" fill="#756858" font-weight="500" text-anchor="start">기기 토큰으로 발송</text>
+<path d="M 1198 834 L 1198 938" fill="none" stroke="#807465" stroke-width="2.3" marker-end="url(#arrow)"/>
+<text x="1210" y="887" font-size="15" fill="#766650" font-weight="500" text-anchor="start">계획 시작 / 미리 알림</text>
+<path d="M 1375 990 L 1411 990 L 1411 132 L 365 132 L 365 150" fill="none" stroke="#807465" stroke-width="2.3" marker-end="url(#arrow)"/>
+<text x="1060" y="121" font-size="15" fill="#766650" font-weight="500" text-anchor="start">사용자 기기로 알림 전달</text>
+<text x="60" y="1011" font-size="19" fill="#3a3028" font-weight="650" text-anchor="start">AI 변경: 제안 → 사용자 확인 → 버전·시간 겹침 검사 → 저장</text>
+<text x="60" y="1050" font-size="19" fill="#3a3028" font-weight="650" text-anchor="start">코인: 완료 확인 → 수령 요청 → 원장 1회 기록 → 잔액 반환</text>
+<text x="60" y="1102" font-size="16" fill="#8b7560" font-weight="500" text-anchor="start">구현 전 설계안. iOS를 전제로 APNs를 표시했으며 앱 플랫폼에 따라 푸시 어댑터를 조정합니다.</text>
+<text x="60" y="1132" font-size="16" fill="#8b7560" font-weight="500" text-anchor="start">타이머 계산·완료 검증은 서버 기준으로 복원하고, 앱은 화면의 초 단위 표시를 담당합니다.</text>
+</g></svg>
