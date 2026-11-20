@@ -1,0 +1,7 @@
+{
+ "version": "0.2.0",
+ "configurations": [
+  {"name":"Pling · Android Emulator","request":"launch","type":"dart","flutterMode":"debug","toolArgs":["--dart-define=API_URL=http://10.0.2.2:8080"]},
+  {"name":"Pling · iOS Simulator","request":"launch","type":"dart","flutterMode":"debug","toolArgs":["--dart-define=API_URL=http://localhost:8080"]}
+ ]
+}

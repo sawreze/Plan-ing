@@ -1,0 +1,36 @@
+{
+  "name": "pling-backend",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node --env-file-if-exists=.env dist/main.js",
+    "dev": "npm run build && npm start",
+    "worker": "node --env-file-if-exists=.env dist/worker.js",
+    "migrate": "node --env-file-if-exists=.env dist/migrate.js",
+    "test": "npm run build && node --env-file-if-exists=.env --test --test-concurrency=1 test/*.test.cjs",
+    "setup:local": "node scripts/setup-local.cjs"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.1.0",
+    "@nestjs/core": "^11.1.0",
+    "@nestjs/platform-express": "^11.1.0",
+    "dotenv": "^17.0.0",
+    "helmet": "^8.0.0",
+    "jose": "^6.0.0",
+    "pg": "^8.16.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.16",
+    "@types/express": "^5.0.0",
+    "@types/node": "^24.0.0",
+    "@types/pg": "^8.15.0",
+    "typescript": "^5.9.0"
+  }
+}

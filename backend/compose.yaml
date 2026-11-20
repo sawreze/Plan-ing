@@ -1,0 +1,18 @@
+services:
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: pling
+      POSTGRES_DB: pling
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run npm run setup:local first}
+    ports:
+      - "127.0.0.1:54329:5432"
+    volumes:
+      - pling_postgres:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pling -d pling"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+volumes:
+  pling_postgres:
